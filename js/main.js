@@ -246,12 +246,18 @@ document.addEventListener("DOMContentLoaded", () => {
     containers.forEach((container) => {
         // RESPONSIVE CONFIG
         const isMobile = window.innerWidth < 1024;
+
+        // OPTIMIZATION: Disable Tilt on mobile (performance & touch conflict)
+        if (isMobile && container.vanillaTilt) {
+            container.vanillaTilt.destroy();
+        }
+
         const config = {
-            duration: isMobile ? 0.3 : 0.5,       // Unified FAST speed (Standard)
-            childDuration: isMobile ? 0.2 : 0.3,  // Text appears almost instantly
-            stagger: isMobile ? 0.02 : 0.05,      // Very tight stagger
-            yOffset: isMobile ? 20 : 30,          // Small physical movement
-            triggerStart: isMobile ? "top bottom+=150" : "top bottom"
+            duration: isMobile ? 0.3 : 0.5,
+            childDuration: isMobile ? 0.2 : 0.3,
+            stagger: isMobile ? 0.01 : 0.05,      // Faster stagger
+            yOffset: isMobile ? 20 : 30,
+            triggerStart: "top bottom"            // Standard trigger for mobile to avoid miscalculations
         };
 
         const tl = gsap.timeline({
