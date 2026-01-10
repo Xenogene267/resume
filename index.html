@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHENG ZHAOHUA | ACID RESUME</title>
+
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#000000',
+                        acid: '#CCFF00',      // Toxic Lime
+                        neon: '#BD00FF',      // Deep Purple
+                        hotpink: '#FF0099',   // Hot Pink
+                        cyan: '#00FFFF',      // Cyber Cyan
+                        metal: '#C0C0C0',     // Chrome
+                        glass: 'rgba(255, 255, 255, 0.05)',
+                    },
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        display: ['"Oswald"', 'sans-serif'],
+                        art: ['"Syne"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'noise': "url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.06%22/%3E%3C/svg%3E')",
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 30s linear infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'breathe': 'breathe 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        breathe: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.15)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Oswald:wght@200..700&family=Syne:wght@400..800&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0"
+        rel="stylesheet">
+    <link type="text/css"
+        href="https://fonts.googleapis.com/css2?family=Google+Symbols:opsz,wght,FILL,GRAD,ROND@24,400,0,0,50&amp;icon_names=link"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-black text-gray-300 antialiased selection:bg-acid selection:text-black">
+    <!-- BACKGROUND -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+        <div class="absolute inset-0 bg-noise opacity-10 mix-blend-overlay"></div>
+        <!-- Fluid Metal Sphere -->
+        <div id="fluid-sphere-container" class="fixed inset-0 w-full h-full z-0 opacity-40"></div>
+    </div>
+
+    <!-- NAV -->
+    <nav
+        class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/10 opacity-0">
+        <div class="flex items-center gap-2">
+            <div class="w-2 h-2 bg-acid animate-pulse"></div>
+            <span class="font-art font-bold text-white tracking-tight">简历_<span
+                    class="text-acid">程兆华</span>_AI产品负责人</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <!-- 邮箱 (Desktop Only) -->
+            <div onclick="copyEmail()"
+                class="hidden md:flex items-center gap-2 px-3 py-2 border border-white/20 text-gray-300 hover:border-acid hover:text-acid font-mono text-xs transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-sm">mail</span>czhua110@outlook.com
+            </div>
+            <!-- 手机+微信 (Desktop Only) -->
+            <div class="hidden md:flex items-center gap-2 px-3 py-2 border border-white/20 text-gray-300 hover:border-neon hover:text-neon font-mono text-xs transition-all cursor-pointer"
+                id="copyPhoneBtn" onclick="copyPhone()">
+                <span class="material-symbols-outlined text-sm">phone</span>
+                <span class="w-px h-4 bg-white/20"></span>
+                <span class="material-symbols-outlined text-sm">chat</span>
+                <span>176-9831-2678</span>
+            </div>
+            <!-- 联系我按钮 (Mobile: Simplified) -->
+            <button onclick="copyPhoneAndShowContact()"
+                class="bg-acid text-black px-3 md:px-5 py-2 font-bold font-mono text-xs uppercase hover:bg-white transition-colors flex items-center gap-2 shadow-[0_0_15px_rgba(204,255,0,0.3)]">
+                <span class="material-symbols-outlined text-sm">send</span><span
+                    class="hidden md:inline">联系我</span><span class="md:hidden">联系我</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="w-full max-w-[1920px] mx-auto pt-24 pb-20 px-4 md:px-12">
+        <!-- SECTION 1: HERO (HUD) -->
+        <section
+            class="min-h-[85vh] flex flex-col justify-center mb-16 md:mb-32 relative perspective-[2000px] opacity-0">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end mb-8 md:mb-20">
+                <div class="lg:col-span-8 relative">
+                    <div class="flex gap-2 md:gap-4 mb-2 md:mb-4">
+                        <span
+                            class="border border-acid text-acid px-2 py-1 text-[12px] font-mono tracking-widest">AI产品负责人</span>
+                        <span
+                            class="border border-white/30 text-gray-400 px-2 py-1 text-[12px] font-mono tracking-widest">4年AI产品经验</span>
+                        <span
+                            class="border border-white/30 text-gray-400 px-2 py-1 text-[12px] font-mono tracking-widest">2年C端产品经验</span>
+                    </div>
+                    <h1
+                        class="text-[12vw] md:text-[9vw] leading-[0.8] font-black text-white font-art tracking-tighter mb-4 md:mb-8 z-10 relative opacity-0">
+                        CHENG<br>
+                        <span
+                            class="text-stroke text-stroke-hover transition-all duration-500 cursor-default animate-text-breathe">ZHAOHUA</span>
+                    </h1>
+
+                    <p
+                        class="profile-text font-mono text-sm md:text-base leading-loose text-gray-400 max-w-5xl border-l-4 border-acid pl-4 md:pl-6 pr-4 md:pr-8 bg-black/40 backdrop-blur-md border border-white/10 rounded-r-lg py-4 opacity-0">
+                        <strong class="text-white">Profile:</strong> <span
+                            class="text-acid font-bold border-b border-acid">程兆华</span>
+                        资深AI产品专家，专注于多模态(LLM)应用层实现落地。擅长从0到1搭建复杂AI产品工程体系，深耕AI活人感方向，具备深厚的底层技术认知 PreTrain/SFT/RLHF/DPO。在
+                        <span class="text-acid font-bold border-b border-acid">Soul App</span> 与 <span
+                            class="text-neon font-bold border-b border-neon">小冰</span> 主导过千万月活的AI核心业务
+                    </p>
+                </div>
+
+                <!-- 3D Floating Status (Right Column) -->
+                <div class="lg:col-span-4 hidden lg:flex justify-end items-center animate-float-breath"
+                    style="animation-duration: 8s;">
+                    <div class="acid-card p-6 w-64 backdrop-blur-md bg-black/40 border border-white/10"
+                        style="opacity: 0.9;">
+                        <div class="text-[10px] text-gray-500 font-mono mb-2">CURRENT STATUS</div>
+                        <div class="text-2xl font-bold text-white font-art mb-4">关注 机会</div>
+                        <div class="flex flex-col gap-2 text-xs font-mono text-gray-400">
+                            <div class="flex justify-between"><span>Location</span><span class="text-white">北京</span>
+                            </div>
+                            <div class="flex justify-between"><span>Preferred Role</span><span
+                                    class="text-white">产品负责人</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4-Column Stats (Interactive Accordion) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:flex gap- md:gap-2 group/list items-stretch">
+                <!-- CARD 1 -->
+                <div
+                    class="relative lg:flex-1 lg:hover:flex-[2] transition-[flex] duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] group/item overflow-hidden rounded">
+                    <div
+                        class="h-full w-full transition-opacity duration-700 lg:group-hover/list:opacity-40 lg:group-hover/item:!opacity-100">
+                        <div class="acid-card p-6 h-full flex flex-col justify-between relative overflow-hidden opacity-0"
+                            data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                            <span
+                                class="material-symbols-outlined relative top-0 left-0 mb-4 text-4xl text-acid transition-all duration-1000 ease-[cubic-bezier(0.25,0.8,0.25,1)] z-0 lg:absolute lg:top-6 lg:left-6 lg:mb-0 lg:group-hover/item:left-[80%] lg:group-hover/item:top-[60%] lg:group-hover/item:scale-[6] lg:group-hover/item:opacity-5 origin-center pointer-events-none">deployed_code</span>
+                            <span class="font-mono text-[10px] text-gray-500 absolute top-6 right-6 z-10">SYS_01</span>
+                            <div class="layer-2 relative z-10 w-full h-full flex flex-col">
+                                <h3
+                                    class="font-art font-bold text-xl lg:group-hover/item:text-3xl text-gray-300 mb-2 group-hover/item:text-acid transition-all duration-700 mt-0 lg:mt-20 lg:group-hover/item:mt-0 whitespace-nowrap pt-0 lg:pt-4">
+                                    AI产品全链路</h3>
+                                <div class="flex-grow-0 lg:group-hover/item:flex-grow transition-all duration-700">
+                                </div>
+                                <ul
+                                    class="font-mono text-sm lg:group-hover/item:text-base text-gray-400 lg:group-hover/item:text-white space-y-2 transition-all duration-500 pt-3">
+                                    <li class="whitespace-nowrap">> 定义北极星效果、设计模型策略</li>
+                                    <li class="whitespace-nowrap">> 搭建训练数据体系、优化评测效果</li>
+                                    <li class="whitespace-nowrap">> Prompt Engineer、人设运营</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div
+                    class="relative lg:flex-1 lg:hover:flex-[2] transition-[flex] duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] group/item overflow-hidden rounded">
+                    <div
+                        class="h-full w-full transition-opacity duration-700 lg:group-hover/list:opacity-40 lg:group-hover/item:!opacity-100">
+                        <div class="acid-card p-6 h-full flex flex-col justify-between relative overflow-hidden opacity-0"
+                            data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                            <span
+                                class="material-symbols-outlined relative top-0 left-0 mb-4 text-4xl text-neon transition-all duration-1000 ease-[cubic-bezier(0.25,0.8,0.25,1)] z-0 lg:absolute lg:top-6 lg:left-6 lg:mb-0 lg:group-hover/item:left-[80%] lg:group-hover/item:top-[60%] lg:group-hover/item:scale-[6] lg:group-hover/item:opacity-5 origin-center pointer-events-none">terminal</span>
+                            <span class="font-mono text-[10px] text-gray-500 absolute top-6 right-6 z-10">SYS_02</span>
+                            <div class="layer-2 relative z-10 w-full h-full flex flex-col">
+                                <h3
+                                    class="font-art font-bold text-xl lg:group-hover/item:text-3xl text-gray-300 mb-2 group-hover/item:text-neon transition-all duration-700 mt-0 lg:mt-20 lg:group-hover/item:mt-0 whitespace-nowrap pt-4 lg:pt-4 pt-0">
+                                    技术深度</h3>
+                                <div class="flex-grow-0 lg:group-hover/item:flex-grow transition-all duration-700">
+                                </div>
+                                <ul
+                                    class="font-mono text-sm lg:group-hover/item:text-base text-gray-400 lg:group-hover/item:text-white space-y-2 transition-all duration-500 pt-3">
+                                    <li class="whitespace-nowrap">> 参与LLM训练数据设计及构建</li>
+                                    <li class="whitespace-nowrap">> 参与超拟人多模态模型设计及构建</li>
+                                    <li class="whitespace-nowrap">> 设计Agent、RAG记忆工程架构</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div
+                    class="relative lg:flex-1 lg:hover:flex-[2] transition-[flex] duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] group/item overflow-hidden rounded">
+                    <div
+                        class="h-full w-full transition-opacity duration-700 lg:group-hover/list:opacity-40 lg:group-hover/item:!opacity-100">
+                        <div class="acid-card p-6 h-full flex flex-col justify-between relative overflow-hidden opacity-0"
+                            data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                            <span
+                                class="material-symbols-outlined relative top-0 left-0 mb-4 text-4xl text-cyan transition-all duration-1000 ease-[cubic-bezier(0.25,0.8,0.25,1)] z-0 lg:absolute lg:top-6 lg:left-6 lg:mb-0 lg:group-hover/item:left-[80%] lg:group-hover/item:top-[60%] lg:group-hover/item:scale-[6] lg:group-hover/item:opacity-5 origin-center pointer-events-none">groups</span>
+                            <span class="font-mono text-[10px] text-gray-500 absolute top-6 right-6 z-10">SYS_03</span>
+                            <div class="layer-2 relative z-10 w-full h-full flex flex-col">
+                                <h3
+                                    class="font-art font-bold text-xl lg:group-hover/item:text-3xl text-gray-300 mb-2 group-hover/item:text-cyan transition-all duration-700 mt-0 lg:mt-20 lg:group-hover/item:mt-0 whitespace-nowrap pt-0 lg:pt-4">
+                                    团队管理</h3>
+                                <div class="flex-grow-0 lg:group-hover/item:flex-grow transition-all duration-700">
+                                </div>
+                                <ul
+                                    class="font-mono text-sm lg:group-hover/item:text-base text-gray-400 lg:group-hover/item:text-white space-y-2 transition-all duration-500 pt-3">
+                                    <li class="whitespace-nowrap">> 3人产品团队管理</li>
+                                    <li class="whitespace-nowrap">> 5人虚线算法、技术管理</li>
+                                    <li class="whitespace-nowrap">> 30+人标注外包搭建</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 4 -->
+                <div
+                    class="relative lg:flex-1 lg:hover:flex-[2] transition-[flex] duration-700 ease-[cubic-bezier(0.25,0.8,0.25,1)] group/item overflow-hidden rounded">
+                    <div
+                        class="h-full w-full transition-opacity duration-700 lg:group-hover/list:opacity-40 lg:group-hover/item:!opacity-100">
+                        <div id="soul-app-card"
+                            class="acid-card p-6 h-full flex flex-col justify-between relative overflow-hidden backdrop-blur-md bg-black/40 border border-white/10 opacity-0"
+                            data-tilt data-tilt-max="5" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                            <span
+                                class="material-symbols-outlined relative top-0 left-0 mb-4 text-4xl text-white transition-all duration-1000 ease-[cubic-bezier(0.25,0.8,0.25,1)] z-0 lg:absolute lg:top-6 lg:left-6 lg:mb-0 lg:group-hover/item:left-[80%] lg:group-hover/item:top-[60%] lg:group-hover/item:scale-[6] lg:group-hover/item:opacity-5 origin-center pointer-events-none">science</span>
+                            <span class="font-mono text-[10px] text-gray-500 absolute top-6 right-6 z-10">SYS_04</span>
+                            <div class="layer-2 relative z-10 w-full h-full flex flex-col">
+                                <h3
+                                    class="font-art font-bold text-xl lg:group-hover/item:text-3xl text-gray-300 mb-2 group-hover/item:text-white transition-all duration-700 mt-0 lg:mt-20 lg:group-hover/item:mt-0 whitespace-nowrap pt-0 lg:pt-4">
+                                    先进性</h3>
+                                <div class="flex-grow-0 lg:group-hover/item:flex-grow transition-all duration-700">
+                                </div>
+                                <ul
+                                    class="font-mono text-sm lg:group-hover/item:text-base text-gray-400 lg:group-hover/item:text-white space-y-2 transition-all duration-500 pt-3">
+                                    <li class="whitespace-nowrap">> 算法工程无障沟通</li>
+                                    <li class="whitespace-nowrap">> 关注前沿产品，技术思想</li>
+                                    <li class="whitespace-nowrap">> 动手复现能力</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- MARQUEE BANNER -->
+    <div
+        class="w-screen bg-acid text-black py-3 overflow-hidden border-y border-white mb-24 rotate-1 scale-105 z-20 relative -ml-[50vw] left-1/2">
+        <div class="animate-marquee whitespace-nowrap font-black font-art text-2xl uppercase flex">
+            <span class="mx-4">/// SOUL APP</span>
+            <span class="mx-4">/// VIRTUAL COMPANION</span>
+            <span class="mx-4">/// DIGITAL AVATAR</span>
+            <span class="mx-4">/// SPOKEN LANGUAGE MODEL</span>
+            <span class="mx-4">/// MICROSOFT XIAOICE</span>
+            <span class="mx-4">/// SOUL APP</span>
+            <span class="mx-4">/// VIRTUAL COMPANION</span>
+            <span class="mx-4">/// DIGITAL AVATAR</span>
+            <span class="mx-4">/// SPOKEN LANGUAGE MODEL</span>
+            <span class="mx-4">/// MICROSOFT XIAOICE</span>
+            <span class="mx-4">/// SOUL APP</span>
+            <span class="mx-4">/// VIRTUAL COMPANION</span>
+            <span class="mx-4">/// DIGITAL AVATAR</span>
+            <span class="mx-4">/// SPOKEN LANGUAGE MODEL</span>
+            <span class="mx-4">/// MICROSOFT XIAOICE</span>
+        </div>
+    </div>
+
+    <main class="w-full max-w-[1920px] mx-auto pb-20 px-4 md:px-12">
+        <!-- SECTION 2: SOUL APP (REBUILT) -->
+        <section class="mb-32 px-4 md:px-12 max-w-[1920px] mx-auto opacity-0">
+            <!-- 2.1 HEADER BLOCK -->
+            <div class="pb-8 mb-16">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-6">
+                    <div>
+                        <div class="flex items-center gap-4 mb-2">
+                            <h2 class="text-7xl md:text-8xl font-black text-white font-art leading-none">SOUL APP</h2>
+                            <span
+                                class="bg-acid text-black font-bold font-mono px-2 py-1 transform -skew-x-12 hidden md:inline-block">1000万+
+                                DAU</span>
+                        </div>
+                        <div class="flex flex-wrap gap-4 text-gray-400 font-mono text-sm md:text-base items-center">
+                            <span class="text-white font-bold">AI能力产品负责人</span>
+                            <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                            <span>2023.07 - 2025.10</span>
+                            <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                            <span>上海</span>
+                            <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                            <span class="text-acid">0-1负责AI产品能力建设</span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="border-t border-white/20 mt-8">
+            </div>
+
+            <!-- 2.2 PROJECT A: VIRTUAL COMPANION -->
+            <div class="project-block mb-32" id="soul-virtual-companion">
+                <div class="flex flex-col xl:flex-row gap-12 items-start">
+                    <!-- VISUAL (Left) -->
+                    <div class="w-full xl:w-1/3">
+                        <div class="acid-card p-2 group transition-transform hover:rotate-2 duration-500 relative"
+                            data-tilt>
+                            <div
+                                class="relative h-[450px] md:h-[475px] w-full bg-black overflow-hidden rounded group/image">
+                                <!-- ACID FILTER IMAGE -->
+                                <img src="assets/images/yuni.jpg"
+                                    class="w-full h-full object-cover opacity-80 group-hover/image:opacity-100 transition-all duration-700 filter grayscale-[50%] sepia-[20%] contrast-125 hover:filter-none mix-blend-luminosity hover:mix-blend-normal">
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent">
+                                </div>
+
+                                <!-- SMOKE CONTAINER -->
+                                <div id="smoke-container" class="absolute pointer-events-none z-20"
+                                    style="bottom: 45%; right: 52%; width: 10px; height: 10px;"></div>
+
+                                <!-- Visualizer Stream -->
+                                <div id="audio-visualizer-stream"
+                                    class="hidden absolute bottom-0 left-0 w-full h-[4px] bg-black/20 overflow-hidden z-30 pointer-events-none">
+                                    <div
+                                        class="h-full w-full bg-gradient-to-r from-transparent via-[#CCFF00] to-transparent animate-cyber-scan blur-[2px] opacity-80">
+                                    </div>
+                                    <div
+                                        class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-white to-transparent animate-cyber-scan opacity-100 mix-blend-overlay">
+                                    </div>
+                                </div>
+                                <!-- Audio Element -->
+                                <audio id="companion-audio" src="assets/全双工.MP3" preload="auto"></audio>
+
+                                <!-- Play Button -->
+                                <div class="absolute bottom-6 right-6 flex items-center gap-4 z-30">
+                                    <button
+                                        class="w-14 h-14 rounded-full border border-acid text-acid flex items-center justify-center hover:bg-acid hover:text-black transition-all"
+                                        id="playAudioBtn">
+                                        <span class="material-symbols-outlined text-2xl" id="playIcon">play_arrow</span>
+                                    </button>
+                                </div>
+
+                                <div
+                                    class="absolute top-4 left-4 border border-acid/50 bg-black/50 backdrop-blur px-3 py-1">
+                                    <span class="text-acid font-mono text-xs">DEMO: 全双工语音通话</span>
+                                </div>
+
+                                <!-- Image Caption -->
+                                <div class="absolute bottom-4 left-4 z-20">
+                                    <span class="text-gray-400 font-mono text-[10px] tracking-wider opacity-80">配图为
+                                        虚拟伴侣角色 屿你</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENT (Right) -->
+                    <div class="w-full xl:w-2/3 space-y-8">
+                        <div>
+                            <h3 class="text-4xl md:text-5xl font-bold text-white font-art mb-4 flex items-center gap-4">
+                                <span class="w-4 h-4 bg-acid inline-block"></span>
+                                虚拟伴侣
+                            </h3>
+                            <div
+                                class="flex flex-wrap gap-x-8 gap-y-2 text-gray-400 font-mono text-sm border-l-2 border-acid pl-4">
+                                <span>2024.08 - 2025.10</span>
+                                <span class="text-white">核心成果：上线4个月获取50万+活跃用户，App时长、LT30显著正向，成为Soul AI核心业务功能</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Col 1: Strategy -->
+                            <div
+                                class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-acid transition-colors group">
+                                <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-acid">strategy</span>
+                                    产品策略
+                                </h4>
+                                <ul class="space-y-4 font-mono text-sm text-gray-400">
+                                    <li class="flex gap-3">
+                                        <span class="text-acid">></span>
+                                        <span>定义并落地8种差异化人设风格 5女3男 精品化人设，推进<span
+                                                class="text-white">真人化生图</span>工作流，人设动态SOP运营</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <span class="text-acid">></span>
+                                        <span>24.08上线超拟人风格音色，模型支持5s音频克隆，Speech to Speech包装礼物作为付费点</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Col 2: Tech -->
+                            <div
+                                class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-acid transition-colors group">
+                                <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-acid">terminal</span>
+                                    技术推进
+                                </h4>
+                                <ul class="space-y-4 font-mono text-sm text-gray-400">
+                                    <li class="flex gap-3">
+                                        <span class="text-acid">></span>
+                                        <span>主导<span class="text-white">全双工语音模型</span>落地，融合VAD技术使AI主动决策说话时机</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <span class="text-acid">></span>
+                                        <span>设计多模型 <span class="text-white">Agent架构</span>，对自研模型定义数据标准</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <span class="text-acid">></span>
+                                        <span>推进SFT与强化学习标注任务，通过Badcase Review抽象迭代策略</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.3 PROJECT B: DIGITAL AVATAR -->
+            <div class="project-block" id="soul-digital-avatar">
+                <div class="flex flex-col xl:flex-row gap-12 items-start">
+                    <!-- VISUAL (Left) -->
+                    <div class="w-full xl:w-1/3">
+                        <div class="acid-card p-2 group transition-transform hover:-rotate-2 duration-500 relative"
+                            data-tilt>
+                            <div class="relative h-[450px] md:h-[520px] w-full bg-[#050505] overflow-hidden rounded flex items-center justify-center border border-neon/30 group-hover:border-neon/60 transition-colors"
+                                id="chat-demo-container">
+                                <!-- Background Effects -->
+                                <div
+                                    class="absolute inset-0 bg-[linear-gradient(rgba(204,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(204,255,0,0.03)_1px,transparent_1px)] bg-[size:40px_40px] opacity-20">
+                                </div>
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/80">
+                                </div>
+
+                                <!-- CHAT DEMO ROOT -->
+                                <div id="chat-demo-root">
+                                    <div class="sim-header">
+                                        <div class="sim-user-row">
+                                            <div class="sim-avatar"></div>
+                                            <div class="sim-meta">
+                                                <div class="sim-username">尹顺顺</div>
+                                                <div class="sim-status">Online </div>
+                                            </div>
+                                        </div>
+                                        <div class="sim-tags">
+                                            <div class="sim-tag" id="tag-intj">#INTJ</div>
+                                            <div class="sim-tag" id="tag-raver">#蹦迪</div>
+                                            <div class="sim-tag" id="tag-insomniac">#失眠</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="sim-stream" id="sim-stream"></div>
+
+                                    <div class="sim-input-zone">
+                                        <div class="sim-chips" id="sim-aiPanel"></div>
+                                        <div class="sim-fake-input">> 输入消息...</div>
+                                    </div>
+
+                                    <div class="sim-cursor" id="sim-cursor"></div>
+                                    <div class="sim-mask" id="sim-mask"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENT (Right) -->
+                    <div class="w-full xl:w-2/3 space-y-8">
+                        <div>
+                            <h3 class="text-4xl md:text-5xl font-bold text-white font-art mb-4 flex items-center gap-4">
+                                <span class="w-4 h-4 bg-neon inline-block"></span>
+                                数字分身/私聊僚机
+                            </h3>
+                            <div
+                                class="flex flex-wrap gap-x-8 gap-y-2 text-gray-400 font-mono text-sm border-l-2 border-neon pl-4">
+                                <span>2023.11 - 2025.10</span>
+                                <span class="text-white">核心成果: 百万日活，App时长、LT30显著正向，作为AI核心收入功能</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-6">
+                            <!-- Col 1: Positioning -->
+                            <div
+                                class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-neon transition-colors group">
+                                <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-neon">target</span>
+                                    产品定位
+                                </h4>
+                                <ul class="space-y-4 font-mono text-sm text-gray-400">
+                                    <li class="flex gap-3">
+                                        <span class="text-neon">></span>
+                                        <span>洞察用户的核心痛点：需要<span class="text-white"> 破冰僚机 </span>，以及<span
+                                                class="text-white"> 高情商嘴替 </span></span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <span class="text-neon">></span>
+                                        <span>建立"用者愿发、收者愿回"的核心体验标准，以高个人回复率、深度聊天轮次作为优质数据筛选标准</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Col 2: Innovation -->
+                            <div
+                                class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-neon transition-colors group">
+                                <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-neon">lightbulb</span>
+                                    策略创新
+                                </h4>
+                                <ul class="space-y-4 font-mono text-sm text-gray-400">
+                                    <li class="flex gap-3">
+                                        <span class="text-neon">></span>
+                                        <span>设计场景化模型调用策略：根据用户标签、聊天阶段，以<span class="text-white"> 像我但优于我
+                                            </span>的标准降低摩擦力。</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <span class="text-neon">></span>
+                                        <span>建立数据挖掘与人工头部场景标注双驱动的效果优化体系，显著提升回复率</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: EXPANSION PACK -->
+        <section class="mb-40 px-4 md:px-12 max-w-[1920px] mx-auto opacity-0">
+            <h2 class="text-5xl font-black text-white font-art mb-12 flex items-center gap-4">
+                <span class="w-8 h-8 bg-acid inline-block skew-x-12 animate-spin-slow"></span>
+                其他过往经历
+            </h2>
+
+            <!-- PAGE A: INDEPENDENT & SUPPORT -->
+            <div class="mb-32 expansion-page">
+                <div class="text-gray-500 font-mono text-xs mb-8 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-white rounded-full"></span>
+                    PAGE 01: Soul其他项目
+                </div>
+
+                <!-- 3.1 ISEKAI ECHO -->
+                <div class="acid-card p-8 group mb-8 relative overflow-hidden opacity-0">
+                    <div class="relative z-10">
+                        <div
+                            class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 border-b border-white/10 pb-4 md:pb-6 gap-4">
+                            <div>
+                                <span class="bg-acid text-black text-[10px] font-bold px-2 py-1 mb-2 inline-block">0-1
+                                    模型能力</span>
+                                <h3 class="text-3xl md:text-4xl font-bold text-white font-art">异世界回响App</h3>
+                                <p class="text-sm text-gray-400 font-mono mt-1">2023.07 - 2024.11 | UGC角色扮演对话产品</p>
+                            </div>
+                            <div class="text-left md:text-right">
+                                <span class="text-2xl font-bold text-acid block">DAU: 3W+</span>
+                                <span class="text-xs text-gray-400 font-mono">次日留存: 50% | 平均对话: 200+轮</span>
+                            </div>
+                        </div>
+                        <!-- content grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 text-sm font-mono text-gray-400">
+                            <div class="space-y-2">
+                                <strong class="text-white block mb-2 border-l-2 border-acid pl-2">从0到1搭建</strong>
+                                <ul class="space-y-2">
+                                    <li>> 主导基于自研大模型搭建人设情感对话能力</li>
+                                    <li>> 通过模型蒸馏+人工标注获取高质量SFT/DPO数据</li>
+                                    <li>> 定义人设模型的效果标准、评测方法与记忆策略</li>
+                                </ul>
+                            </div>
+                            <div class="space-y-2">
+                                <strong class="text-white block mb-2 border-l-2 border-acid pl-2">多模态能力</strong>
+                                <ul class="space-y-2">
+                                    <li>> 推进基于GPT-VITS的TTS音色融合落地，提升沉浸感</li>
+                                    <li>> Stable Diffusion模型满足人设图像生成需求</li>
+                                </ul>
+                            </div>
+                            <div class="space-y-2">
+                                <strong class="text-white block mb-2 border-l-2 border-acid pl-2">安全与运营</strong>
+                                <ul class="space-y-2">
+                                    <li>> 定义对话与人设的多层级安全策略</li>
+                                    <li>> 搭建30+人外包写手团队，支持语音标注、角色扮演运营</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3.2 AI CAPABILITY SUPPORT -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div
+                        class="md:col-span-4 acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-white font-art">中台能力支持</h3>
+                            <p class="text-xs text-gray-400 font-mono">支持全站AI能力建设 | 10+功能落地 | 2023.07 - 2025.10</p>
+                        </div>
+                        <span class="material-symbols-outlined text-gray-600">hub</span>
+                    </div>
+                    <!-- Items -->
+                    <div
+                        class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-acid transition-colors cursor-default">
+                        <strong class="text-white block mb-1">群聊房AI</strong>
+                        <p class="text-xs text-gray-400">设计多人场景下的AI对话逻辑与互动机制</p>
+                    </div>
+                    <div
+                        class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-acid transition-colors cursor-default">
+                        <strong class="text-white block mb-1">智能文案</strong>
+                        <p class="text-xs text-gray-400">发布器AI功能：智能文案生成与自动润色</p>
+                    </div>
+                    <div
+                        class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-acid transition-colors cursor-default">
+                        <strong class="text-white block mb-1">AI娱乐化</strong>
+                        <p class="text-xs text-gray-400">AI塔罗牌 / 内容广场虚拟人互动 / Push生成</p>
+                    </div>
+                    <div
+                        class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-6 hover:border-acid transition-colors cursor-default">
+                        <strong class="text-white block mb-1">中后台平台</strong>
+                        <p class="text-xs text-gray-400">业务配置、模型调试、Prompt管理、多轮标注</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE B: PAST LOGS -->
+            <div id="expansion-page-b" class="mt-32 expansion-page">
+                <div class="text-gray-500 font-mono text-xs mb-8 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-white rounded-full"></span>
+                    PAGE 02: PAST LOGS
+                </div>
+
+                <!-- 3.3 MICROSOFT XIAOICE -->
+                <div
+                    class="acid-card backdrop-blur-md bg-black/40 border border-white/10 p-8 group mb-8 relative overflow-hidden opacity-0 hover:border-neon transition-colors">
+                    <div class="relative z-10">
+                        <div
+                            class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 border-b border-white/10 pb-6 gap-4">
+                            <div>
+                                <span
+                                    class="bg-neon text-white text-[10px] font-bold px-2 py-1 mb-2 inline-block">MICROSOFT</span>
+                                <h3 class="text-3xl md:text-4xl font-bold text-white font-art">红棉小冰</h3>
+                                <p class="text-sm text-gray-400 font-mono mt-1">2021.05 - 2023.06 | 小冰岛App - C端功能 &
+                                    模型能力负责人</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-2xl font-bold text-neon block">近百万用户的Unity 3D虚拟人社交产品（类动森风格）</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 text-sm font-mono text-gray-400">
+                            <div class="space-y-4">
+                                <strong class="text-white block border-l-2 border-neon pl-2 mb-2">核心贡献</strong>
+                                <ul class="space-y-2">
+                                    <li>> 中期接手C端产品设计，优化交互与视觉体验，负责3D服装/动作/环境资源的项目管理</li>
+                                    <li>> 从0到1设计并落地基于生成模型的角色扮演虚拟人社区，上线后日活1万+，7日留存20%，日均对话30轮/人，使用时长占App总时长的40%</li>
+                                    <li>> 设计夸夸多人群聊、解压Battle等创新玩法，项目管理</li>
+                                </ul>
+                            </div>
+                            <div class="space-y-4">
+                                <strong class="text-white block border-l-2 border-neon pl-2 mb-2">模型能力</strong>
+                                <ul class="space-y-2">
+                                    <li>> 参与人设情感类大模型的对话任务标注设计、评测指标制定与效果迭代</li>
+                                    <li>> 设计AI训练玩法的产品包装（Intention识别、文章训练、对话QA等），支持网红复刻项目落地</li>
+                                </ul>
+                            </div>
+                            <div class="space-y-4">
+                                <strong class="text-white block border-l-2 border-neon pl-2 mb-2">其他项目</strong>
+                                <ul class="space-y-2">
+                                    <li>> 支持网红复刻项目的产品化落地</li>
+                                    <li>> 推动数期Weekly Update运营，提供玩法设计与产品包装方案，单作品外部平台曝光超千万</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3.4 EARLY CAREER -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                    <!-- Job 1 -->
+                    <div
+                        class="acid-card p-8 relative overflow-hidden flex flex-col hover:border-acid transition-colors duration-300">
+                        <div class="relative z-10 w-full flex flex-col gap-6">
+                            <div>
+                                <span class="text-[12px] text-gray-300 font-mono block mb-1">2020.10 - 2021.04</span>
+                                <h4 class="text-xl font-bold text-white font-art whitespace-nowrap">浙江艺旗教育科技</h4>
+                                <span class="text-xs text-acid font-mono">小熊美术 - 游戏化产品经理</span>
+                            </div>
+
+                            <p class="text-sm text-gray-400 font-mono border-t border-white/10 pt-6 leading-relaxed">
+                                > 从0到1设计小熊美术IP装扮养成游戏，功能点击率50%+，14日留存20%+<br>
+                                > 设计美术宝1对1/小班课直播预习游戏，制作7个游戏模板
+                            </p>
+                        </div>
+                        <span
+                            class="material-symbols-outlined absolute -bottom-4 -right-4 text-[120px] text-white/5 pointer-events-none">draw</span>
+                    </div>
+
+                    <!-- Job 2 -->
+                    <div
+                        class="acid-card p-8 relative overflow-hidden flex flex-col hover:border-acid transition-colors duration-300">
+                        <div class="relative z-10 w-full flex flex-col gap-6">
+                            <div>
+                                <span class="text-[12px] text-gray-300 font-mono block mb-1">2019.06 - 2020.09</span>
+                                <h4 class="text-xl font-bold text-white font-art whitespace-nowrap">核桃编程</h4>
+                                <span class="text-xs text-acid font-mono">游戏策划</span>
+                            </div>
+
+                            <p class="text-sm text-gray-400 font-mono border-t border-white/10 pt-6 leading-relaxed">
+                                > 负责Scratch游戏关卡、教案、视频与美术制作，累计完成30+节AI双师互动课，参与200+关卡设计<br>
+                                > 通过AB测试优化课程体验，使用户完课率平均提升5%，有效提升续报率
+                            </p>
+                        </div>
+                        <span
+                            class="material-symbols-outlined absolute -bottom-4 -right-4 text-[120px] text-white/5 pointer-events-none">code_blocks</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: THE SPECS (HUD Redesign) -->
+        <section
+            class="min-h-[85vh] flex flex-col justify-center items-center py-20 relative overflow-hidden w-screen left-1/2 -ml-[50vw]">
+            <div class="absolute inset-0 pointer-events-none"></div>
+            <div
+                class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] opacity-20 pointer-events-none">
+            </div>
+
+            <div id="bg-slogan"
+                class="absolute inset-0 flex flex-col justify-center items-center pointer-events-none select-none overflow-hidden z-0 opacity-10 animate-pulse duration-[3000ms]">
+                <span class="text-[25vw] md:text-[18vw] font-black font-art leading-[0.85] text-transparent"
+                    style="-webkit-text-stroke: 2px rgba(255,255,255,0.2);">BUILD</span>
+                <span class="text-[25vw] md:text-[18vw] font-black font-art leading-[0.85] text-transparent"
+                    style="-webkit-text-stroke: 2px rgba(255,255,255,0.2);">NEW</span>
+                <span class="text-[25vw] md:text-[18vw] font-black font-art leading-[0.85] text-transparent"
+                    style="-webkit-text-stroke: 2px rgba(255,255,255,0.2);">SOULS</span>
+            </div>
+
+            <!-- Foreground Content (HUD) -->
+            <div class="relative z-10 w-full max-w-7xl px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                <!-- Left Column: Identity/Education -->
+                <div class="lg:col-span-5 flex flex-col justify-center">
+                    <div class="mb-12">
+                        <h2 class="text-6xl font-black font-art text-white mb-2 flex items-center gap-4">
+                            <span class="w-3 h-12 bg-acid block"></span> OTHER
+                        </h2>
+                        <p class="text-gray-500 font-mono text-sm pl-7">教育背景 // 其他能力</p>
+                    </div>
+
+                    <!-- Education Card -->
+                    <div
+                        class="acid-card p-0 overflow-hidden group hover:border-acid transition-colors duration-500 relative">
+                        <div
+                            class="h-32 bg-white/5 border-b border-white/10 relative overflow-hidden group-hover:bg-white/10 transition-colors">
+                            <div
+                                class="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] animate-[shimmer_3s_infinite]">
+                            </div>
+                            <span
+                                class="absolute bottom-[-10px] right-[-10px] text-5xl md:text-8xl font-black text-white/5 select-none text-stroke font-art">BUPT</span>
+                            <div class="absolute top-4 left-6 flex gap-2">
+                                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            </div>
+                        </div>
+
+                        <div class="p-8 relative">
+                            <div class="flex justify-between items-start mb-8">
+                                <div>
+                                    <h3
+                                        class="text-3xl font-bold text-white font-art group-hover:text-acid transition-colors">
+                                        北京邮电大学</h3>
+                                    <p class="text-gray-400 font-mono text-xs mt-2 tracking-wider">BEIJING UNIV. OF
+                                        POSTS & TELECOM.</p>
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-4xl text-white/20 group-hover:text-acid group-hover:rotate-12 transition-all duration-500">school</span>
+                            </div>
+
+                            <div class="space-y-4 font-mono text-sm text-gray-400">
+                                <div
+                                    class="flex justify-between items-center border-b border-white/5 pb-3 hover:pl-2 transition-all">
+                                    <span class="text-xs text-gray-600">MAJOR_TYPE</span>
+                                    <span class="text-white font-bold">数字媒体技术</span>
+                                </div>
+                                <div
+                                    class="flex justify-between items-center border-b border-white/5 pb-3 hover:pl-2 transition-all">
+                                    <span class="text-xs text-gray-600">DEGREE_LEVEL</span>
+                                    <span class="text-white font-bold">工学学士 (Bachelor)</span>
+                                </div>
+                                <div
+                                    class="flex justify-between items-center border-b border-white/5 pb-3 hover:pl-2 transition-all">
+                                    <span class="text-xs text-gray-600">DEPLOY_DATE</span>
+                                    <span class="text-acid font-bold bg-acid/10 px-2 py-0.5 rounded">2015.09 -
+                                        2019.06</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Skills Matrix -->
+                <div class="lg:col-span-7 flex flex-col justify-center">
+                    <div
+                        class="acid-card p-8 lg:p-12 relative overflow-hidden h-full flex flex-col justify-center opacity-0">
+                        <span
+                            class="material-symbols-outlined absolute top-6 right-6 text-5xl text-white/5 animate-pulse">memory</span>
+                        <h3 class="text-xl font-bold text-white font-art mb-8 flex items-center gap-3">
+                            <span class="material-symbols-outlined text-acid">dataset</span>
+                            CAPABILITY MATRIX
+                        </h3>
+
+                        <div class="grid grid-cols-1 gap-y-8">
+                            <!-- Skill 1 -->
+                            <div class="group transform transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                <div class="flex justify-between text-xs font-mono text-gray-500 mb-2">
+                                    <span class="group-hover:text-white transition-colors">C端交互、设计 (Interaction
+                                        Design)</span>
+                                    <span class="text-acid">[ SKILLED ]</span>
+                                </div>
+                                <div class="flex gap-1 h-3">
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF] delay-[50ms]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF] delay-[100ms]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid opacity-40 transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:opacity-60 delay-[150ms]">
+                                    </div>
+                                    <div class="flex-1 bg-white/10"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill 2 -->
+                            <div class="group transform transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                <div class="flex justify-between text-xs font-mono text-gray-500 mb-2">
+                                    <span class="group-hover:text-white transition-colors">游戏引擎 (Game Engine /
+                                        Unity)</span>
+                                    <span class="text-acid opacity-70">[ INTERMEDIATE ]</span>
+                                </div>
+                                <div class="flex gap-1 h-3">
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF] delay-[50ms]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid opacity-40 transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:opacity-60 delay-[100ms]">
+                                    </div>
+                                    <div class="flex-1 bg-white/10"></div>
+                                    <div class="flex-1 bg-white/10"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill 3 -->
+                            <div class="group transform transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                <div class="flex justify-between text-xs font-mono text-gray-500 mb-2">
+                                    <span class="group-hover:text-white transition-colors">3D模型 (3D Modeling /
+                                        Blender)</span>
+                                    <span class="text-acid opacity-70">[ INTERMEDIATE ]</span>
+                                </div>
+                                <div class="flex gap-1 h-3">
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF] delay-[50ms]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid opacity-40 transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:opacity-60 delay-[100ms]">
+                                    </div>
+                                    <div class="flex-1 bg-white/10"></div>
+                                    <div class="flex-1 bg-white/10"></div>
+                                </div>
+                            </div>
+
+                            <!-- Skill 4 -->
+                            <div class="group transform transition-all duration-300 hover:scale-[1.02] cursor-default">
+                                <div class="flex justify-between text-xs font-mono text-gray-500 mb-2">
+                                    <span class="group-hover:text-white transition-colors">视效导演 (Visual Director)</span>
+                                    <span class="text-acid">[ SKILLED ]</span>
+                                </div>
+                                <div class="flex gap-1 h-3">
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF] delay-[50ms]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid shadow-[0_0_10px_#CCFF00] transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:shadow-[0_0_15px_#BD00FF] delay-[100ms]">
+                                    </div>
+                                    <div
+                                        class="flex-1 bg-acid opacity-40 transition-colors duration-300 group-hover:bg-[#BD00FF] group-hover:opacity-60 delay-[150ms]">
+                                    </div>
+                                    <div class="flex-1 bg-white/10"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-12 pt-6 border-t border-white/10 flex justify-between font-mono text-[10px] text-gray-600">
+                            <span>SYSTEM_CHECK</span>
+                            <span>READY_GO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Only Footer Slogan -->
+            <div
+                class="md:hidden mt-20 pb-20 flex flex-col items-center justify-center opacity-30 select-none pointer-events-none">
+                <span class="text-[18vw] font-black font-art leading-[0.85] text-transparent"
+                    style="-webkit-text-stroke: 1px rgba(255,255,255,0.4);">BUILD</span>
+                <span class="text-[18vw] font-black font-art leading-[0.85] text-transparent"
+                    style="-webkit-text-stroke: 1px rgba(255,255,255,0.4);">NEW</span>
+                <span class="text-[18vw] font-black font-art leading-[0.85] text-transparent"
+                    style="-webkit-text-stroke: 1px rgba(255,255,255,0.4);">SOULS</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- TOAST -->
+    <div id="toastContainer"
+        class="fixed top-32 left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- MAIN LOGIC -->
+    <script src="js/main.js"></script>
+
+    <!-- Animation Safety Net: Ensure content is visible even if GSAP fails -->
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const hiddenElements = document.querySelectorAll('.opacity-0');
+                if (hiddenElements.length > 0) {
+                    console.log('Safety Net Triggered: Forcing visibility on ' + hiddenElements.length + ' elements');
+                    hiddenElements.forEach(el => {
+                        el.classList.remove('opacity-0');
+                        el.style.opacity = '1';
+                    });
+                }
+            }, 500); // 500ms delay to allow GSAP to start first
+        });
+    </script>
+</body>
+
+</html>
