@@ -253,11 +253,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const config = {
-            duration: isMobile ? 0.6 : 0.5,       // Slower, more elegant
-            childDuration: isMobile ? 0.4 : 0.3,
-            stagger: isMobile ? 0.1 : 0.05,       // Distinct stagger
+            duration: isMobile ? 0.4 : 0.5,
+            childDuration: isMobile ? 0.3 : 0.3,
+            stagger: isMobile ? 0 : 0.05,         // No wave effect on mobile
             yOffset: isMobile ? 30 : 30,
-            triggerStart: isMobile ? "top 85%" : "top bottom" // Wait until element is 15% inside viewport
+            triggerStart: isMobile ? "top 95%" : "top bottom" // Trigger almost immediately
         };
 
         const tl = gsap.timeline({

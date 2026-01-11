@@ -970,10 +970,10 @@
                 document.addEventListener('DOMContentLoaded', forceShow);
                 window.addEventListener('load', forceShow);
 
-                // Aggressive checks removed for smoother scroll
-                // setTimeout(forceShow, 500);
-                // setTimeout(forceShow, 1500);
-                // setTimeout(forceShow, 3000);
+                // Safety Net: Aggressive fallback to ensure visibility
+                setTimeout(forceShow, 1000);
+                setTimeout(forceShow, 2000);
+                setTimeout(forceShow, 4000);
             })();
     </script>
 </body>
