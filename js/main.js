@@ -253,11 +253,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const config = {
-            duration: isMobile ? 0.4 : 0.5,
-            childDuration: isMobile ? 0.3 : 0.3,
-            stagger: isMobile ? 0 : 0.05,         // No wave effect on mobile
-            yOffset: isMobile ? 30 : 30,
-            triggerStart: isMobile ? "top 95%" : "top bottom" // Trigger almost immediately
+            duration: isMobile ? 0.3 : 0.5,
+            childDuration: isMobile ? 0.1 : 0.3,  // Snappy children
+            yOffset: isMobile ? 20 : 30,
+            triggerStart: "top 85%"
         };
 
         const tl = gsap.timeline({
@@ -315,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     ease: "power3.out",
                     clearProps: "transform"
                 },
-                shouldAnimateContainer ? "<0.1" : 0
+                shouldAnimateContainer ? "<0" : 0 // Sync with container immediately
             );
         }
     });
