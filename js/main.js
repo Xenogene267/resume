@@ -253,11 +253,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const config = {
-            duration: isMobile ? 0.3 : 0.5,
-            childDuration: isMobile ? 0.2 : 0.3,
-            stagger: isMobile ? 0.01 : 0.05,      // Faster stagger
-            yOffset: isMobile ? 20 : 30,
-            triggerStart: "top bottom"            // Standard trigger for mobile to avoid miscalculations
+            duration: isMobile ? 0.6 : 0.5,       // Slower, more elegant
+            childDuration: isMobile ? 0.4 : 0.3,
+            stagger: isMobile ? 0.1 : 0.05,       // Distinct stagger
+            yOffset: isMobile ? 30 : 30,
+            triggerStart: isMobile ? "top 85%" : "top bottom" // Wait until element is 15% inside viewport
         };
 
         const tl = gsap.timeline({

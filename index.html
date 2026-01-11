@@ -8,11 +8,7 @@
 
     <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
-    <script>
-        // Init vConsole
-        var vConsole = new VConsole();
-    </script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -974,10 +970,10 @@
                 document.addEventListener('DOMContentLoaded', forceShow);
                 window.addEventListener('load', forceShow);
 
-                // Aggressive fallback checks
-                setTimeout(forceShow, 500);
-                setTimeout(forceShow, 1500);
-                setTimeout(forceShow, 3000);
+                // Aggressive checks removed for smoother scroll
+                // setTimeout(forceShow, 500);
+                // setTimeout(forceShow, 1500);
+                // setTimeout(forceShow, 3000);
             })();
     </script>
 </body>
