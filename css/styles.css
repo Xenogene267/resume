@@ -11,6 +11,8 @@ body {
     height: 100%;
     scrollbar-width: thin;
     scrollbar-color: #CCFF00 #000;
+    touch-action: pan-y;
+    /* Ensure vertical scrolling is always allowed */
 }
 
 /* CUSTOM SCROLLBAR STYLING */
