@@ -952,18 +952,27 @@
 
     <!-- Animation Safety Net: Ensure content is visible even if GSAP fails -->
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const hiddenElements = document.querySelectorAll('.opacity-0');
-                if (hiddenElements.length > 0) {
-                    console.log('Safety Net Triggered: Forcing visibility on ' + hiddenElements.length + ' elements');
-                    hiddenElements.forEach(el => {
-                        el.classList.remove('opacity-0');
-                        el.style.opacity = '1';
-                    });
+            (function () {
+                function forceShow() {
+                    const hiddenElements = document.querySelectorAll('.opacity-0');
+                    if (hiddenElements.length > 0) {
+                        console.log('Safety Net Triggered: Forcing visibility on ' + hiddenElements.length + ' elements');
+                        hiddenElements.forEach(el => {
+                            el.classList.remove('opacity-0');
+                            el.style.opacity = '1';
+                        });
+                    }
                 }
-            }, 500); // 500ms delay to allow GSAP to start first
-        });
+
+                // Run immediately on DOM finish, page load, and periodically for a few seconds
+                document.addEventListener('DOMContentLoaded', forceShow);
+                window.addEventListener('load', forceShow);
+
+                // Aggressive fallback checks
+                setTimeout(forceShow, 500);
+                setTimeout(forceShow, 1500);
+                setTimeout(forceShow, 3000);
+            })();
     </script>
 </body>
 
